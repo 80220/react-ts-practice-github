@@ -10,6 +10,10 @@ interface Props {
 
 const styleUl = css`
   display: flex;
+  flex-wrap: wrap;
+  /* justify-content: start; */
+  border: solid 1px;
+  padding: 0;
 `;
 const styleLi = css`
   list-style-type: none;
@@ -17,6 +21,13 @@ const styleLi = css`
 
 const styleLiInput = css`
   list-style-type: none;
+`;
+
+const styleInput = css`
+  width: auto;
+  border: none;
+  border-color: transparent;
+  outline: none;
 `;
 
 function Chips(props: Props) {
@@ -32,11 +43,14 @@ function Chips(props: Props) {
           return (
             <li key={counter.current++} css={styleLi}>
               <span>{v}</span>
+              <button>(x)</button>
             </li>
           );
         })}
         <li css={styleLiInput}>
           <input
+            css={styleInput}
+            type="text"
             onKeyDown={(e: any) => {
               if (e.code === "Enter") {
                 createNewChip(e.target.value);

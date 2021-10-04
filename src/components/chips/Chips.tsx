@@ -9,19 +9,16 @@ interface Props {
   onChange: Function;
 }
 
-const ulBase = css`
+const ulCSS = css`
   display: flex;
   flex-wrap: wrap;
   padding: 2px 2px 2px 2px;
-`;
-const styleUl = css`
-  ${ulBase}
   border: 1px solid #2196f3;
 `;
 
-const styleInputFocused = css`
-  ${ulBase}
-  box-shadow: 0 0 0 0.2rem #a6d5fa;
+const ulInputFocusedCSS = css`
+  ${ulCSS}
+  box-shadow: 0 0 0 3px #a6d5fa;
 `;
 
 const styleLi = css`
@@ -81,7 +78,7 @@ function Chips(props: Props) {
   return (
     <div>
       <Icons />
-      <ul css={inputFocused ? styleInputFocused : styleUl}>
+      <ul css={inputFocused ? ulInputFocusedCSS : ulCSS}>
         {values.map((v, index) => {
           return (
             <li key={counter.current++} css={styleLi}>

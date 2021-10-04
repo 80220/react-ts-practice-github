@@ -21,29 +21,50 @@ const styleLi = css`
 
 const styleLiInput = css`
   list-style-type: none;
+  flex: 1;
 `;
 
 const styleInput = css`
-  width: auto;
+  width: 99%;
   border: none;
   border-color: transparent;
   outline: none;
 `;
 
+const styleChip = css`
+  border: 1px solid;
+  padding: 0px 2px 0px 2px;
+`;
+
+const styleButtonRemove = css`
+  border-radius: 50%;
+`;
+
 function Chips(props: Props) {
   const { values, onChange } = props;
   const counter = useRef(0);
-  const createNewChip = (value: string) => {
+  const createChip = (value: string) => {
     onChange({ value: [...values, value] });
+  };
+  const removeChip = (index: number) => {
+    values.splice(index, 1);
+    onChange({ value: [...values] });
   };
   return (
     <div>
       <ul css={styleUl}>
-        {values.map((v) => {
+        {values.map((v, index) => {
           return (
             <li key={counter.current++} css={styleLi}>
-              <span>{v}</span>
-              <button>(x)</button>
+              <span css={styleChip}>{v}</span>
+              <button
+                css={styleButtonRemove}
+                onClick={() => {
+                  removeChip(index);
+                }}
+              >
+                X
+              </button>
             </li>
           );
         })}
@@ -53,7 +74,7 @@ function Chips(props: Props) {
             type="text"
             onKeyDown={(e: any) => {
               if (e.code === "Enter") {
-                createNewChip(e.target.value);
+                createChip(e.target.value);
                 e.target.value = "";
               }
             }}

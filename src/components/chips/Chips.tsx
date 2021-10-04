@@ -88,8 +88,11 @@ function Chips(props: Props) {
               <span css={styleChip}>{v}</span>
               <div
                 css={styleButtonRemove}
-                onMouseDown={() => {
+                onClick={() => {
                   removeChip(index);
+                }}
+                onMouseDown={(e) => {
+                  e.preventDefault();
                 }}
               >
                 <svg viewBox="0 0 72.434 72.44">

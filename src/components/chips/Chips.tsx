@@ -39,6 +39,7 @@ const styleLiInput = css`
 
 const styleInput = css`
   width: 99%;
+  min-width: 150px;
   border: none;
   border-color: transparent;
   outline: none;
@@ -87,7 +88,7 @@ function Chips(props: Props) {
               <span css={styleChip}>{v}</span>
               <div
                 css={styleButtonRemove}
-                onClick={() => {
+                onMouseDown={() => {
                   removeChip(index);
                 }}
               >
@@ -108,12 +109,10 @@ function Chips(props: Props) {
                 e.target.value = "";
               }
             }}
-            onFocus={(e) => {
-              console.log("FOCUS");
+            onFocus={() => {
               setInputFocused(true);
             }}
-            onBlur={(e) => {
-              console.log("UNFOCUS");
+            onBlur={() => {
               setInputFocused(false);
             }}
           ></input>

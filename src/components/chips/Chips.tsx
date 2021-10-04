@@ -2,6 +2,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import { useRef } from "react";
+import Icons from "../Icons";
 // type F = (values: string[]) => void;
 interface Props {
   values: string[];
@@ -11,12 +12,17 @@ interface Props {
 const styleUl = css`
   display: flex;
   flex-wrap: wrap;
-  /* justify-content: start; */
-  border: solid 1px;
-  padding: 0;
+  border: 1px solid #2196f3;
+  padding: 2px 2px 2px 2px;
+  &:focus {
+    box-shadow: 0 0 0 0.2rem #a6d5fa;
+  }
 `;
 const styleLi = css`
+  display: flex;
   list-style-type: none;
+  background: #e3f2fd;
+  margin: 5px;
 `;
 
 const styleLiInput = css`
@@ -32,12 +38,24 @@ const styleInput = css`
 `;
 
 const styleChip = css`
-  border: 1px solid;
+  text-align: left;
+  background: #e3f2fd;
   padding: 0px 2px 0px 2px;
+  overflow-wrap: anywhere;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 0.9em;
 `;
 
 const styleButtonRemove = css`
-  border-radius: 50%;
+  cursor: pointer;
+  padding-left: 2px;
+  padding-right: 2px;
+  padding-top: 2px;
+  height: 15px;
+  width: 15px;
+  min-height: 15px;
+  min-width: 15px;
 `;
 
 function Chips(props: Props) {
@@ -52,19 +70,22 @@ function Chips(props: Props) {
   };
   return (
     <div>
+      <Icons />
       <ul css={styleUl}>
         {values.map((v, index) => {
           return (
             <li key={counter.current++} css={styleLi}>
               <span css={styleChip}>{v}</span>
-              <button
+              <div
                 css={styleButtonRemove}
                 onClick={() => {
                   removeChip(index);
                 }}
               >
-                X
-              </button>
+                <svg viewBox="0 0 72.434 72.44">
+                  <use href="#cancel-icon" />
+                </svg>
+              </div>
             </li>
           );
         })}
@@ -74,7 +95,7 @@ function Chips(props: Props) {
             type="text"
             onKeyDown={(e: any) => {
               if (e.code === "Enter") {
-                createChip(e.target.value);
+                if (e.target.value.length > 0) createChip(e.target.value);
                 e.target.value = "";
               }
             }}

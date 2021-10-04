@@ -1,7 +1,7 @@
 // https://www.primefaces.org/primereact/showcase/#/chips
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { useRef } from "react";
+import { useState, useRef } from "react";
 import Icons from "../Icons";
 // type F = (values: string[]) => void;
 interface Props {
@@ -9,15 +9,21 @@ interface Props {
   onChange: Function;
 }
 
-const styleUl = css`
+const ulBase = css`
   display: flex;
   flex-wrap: wrap;
-  border: 1px solid #2196f3;
   padding: 2px 2px 2px 2px;
-  &:focus {
-    box-shadow: 0 0 0 0.2rem #a6d5fa;
-  }
 `;
+const styleUl = css`
+  ${ulBase}
+  border: 1px solid #2196f3;
+`;
+
+const styleInputFocused = css`
+  ${ulBase}
+  box-shadow: 0 0 0 0.2rem #a6d5fa;
+`;
+
 const styleLi = css`
   display: flex;
   list-style-type: none;
@@ -26,6 +32,7 @@ const styleLi = css`
 `;
 
 const styleLiInput = css`
+  padding-top: 4px;
   list-style-type: none;
   flex: 1;
 `;
@@ -61,6 +68,8 @@ const styleButtonRemove = css`
 function Chips(props: Props) {
   const { values, onChange } = props;
   const counter = useRef(0);
+  const [inputFocused, setInputFocused] = useState<boolean>(false);
+
   const createChip = (value: string) => {
     onChange({ value: [...values, value] });
   };
@@ -71,7 +80,7 @@ function Chips(props: Props) {
   return (
     <div>
       <Icons />
-      <ul css={styleUl}>
+      <ul css={inputFocused ? styleInputFocused : styleUl}>
         {values.map((v, index) => {
           return (
             <li key={counter.current++} css={styleLi}>
@@ -98,6 +107,14 @@ function Chips(props: Props) {
                 if (e.target.value.length > 0) createChip(e.target.value);
                 e.target.value = "";
               }
+            }}
+            onFocus={(e) => {
+              console.log("FOCUS");
+              setInputFocused(true);
+            }}
+            onBlur={(e) => {
+              console.log("UNFOCUS");
+              setInputFocused(false);
             }}
           ></input>
         </li>

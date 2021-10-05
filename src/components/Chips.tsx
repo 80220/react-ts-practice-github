@@ -2,18 +2,19 @@
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import { useState, useRef } from "react";
-import Icons from "../Icons";
-// type F = (values: string[]) => void;
+import Icons from "./Icons";
 interface Props {
   values: string[];
   onChange: Function;
 }
 
+const backgroundColor = "#e3f2fd";
+const borderColor = "#2196f3";
 const ulCSS = css`
   display: flex;
   flex-wrap: wrap;
   padding: 2px 2px 2px 2px;
-  border: 1px solid #2196f3;
+  border: 1px solid ${borderColor};
 `;
 
 const ulInputFocusedCSS = css`
@@ -21,46 +22,47 @@ const ulInputFocusedCSS = css`
   box-shadow: 0 0 0 3px #a6d5fa;
 `;
 
-const styleLi = css`
+const liCSS = css`
   display: flex;
-  list-style-type: none;
-  background: #e3f2fd;
-  margin: 5px;
+  /* list-style-type: none; */
+  background: ${backgroundColor};
+  margin: 3px;
+  border-radius: 5px;
 `;
 
-const styleLiInput = css`
+const liInputCSS = css`
   padding-top: 4px;
-  list-style-type: none;
-  flex: 1;
+  list-style-type: none; /* to remove list bullets */
+  flex: 1; /* to make input strech to the end */
 `;
 
-const styleInput = css`
-  width: 99%;
-  min-width: 150px;
+const inputCSS = css`
+  width: 99%; /* ??? */
+  min-width: 150px; /* to make input field wrap to next line for wider input field */
   border: none;
   border-color: transparent;
-  outline: none;
+  outline: none; /* no border when focused */
 `;
 
-const styleChip = css`
+const chipCSS = css`
   text-align: left;
-  background: #e3f2fd;
-  padding: 0px 2px 0px 2px;
-  overflow-wrap: anywhere;
+  padding: 2px 4px 4px 4px;
+  overflow-wrap: anywhere; /* wrapping text inside of chip */
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   font-size: 0.9em;
 `;
 
-const styleButtonRemove = css`
+const buttonRemoveCSS = css`
   cursor: pointer;
-  padding-left: 2px;
-  padding-right: 2px;
-  padding-top: 2px;
-  height: 15px;
-  width: 15px;
-  min-height: 15px;
-  min-width: 15px;
+  padding-left: 1px;
+  padding-right: 4px;
+  padding-top: 4px;
+  /* set button size */
+  height: 1em;
+  width: 1em;
+  min-height: 1em;
+  min-width: 1em;
 `;
 
 function Chips(props: Props) {
@@ -81,15 +83,15 @@ function Chips(props: Props) {
       <ul css={inputFocused ? ulInputFocusedCSS : ulCSS}>
         {values.map((v, index) => {
           return (
-            <li key={counter.current++} css={styleLi}>
-              <span css={styleChip}>{v}</span>
+            <li key={counter.current++} css={liCSS}>
+              <span css={chipCSS}>{v}</span>
               <div
-                css={styleButtonRemove}
+                css={buttonRemoveCSS}
                 onClick={() => {
                   removeChip(index);
                 }}
                 onMouseDown={(e) => {
-                  e.preventDefault();
+                  e.preventDefault(); /* to allow onclick propagate after onblur */
                 }}
               >
                 <svg viewBox="0 0 72.434 72.44">
@@ -99,9 +101,9 @@ function Chips(props: Props) {
             </li>
           );
         })}
-        <li css={styleLiInput}>
+        <li css={liInputCSS}>
           <input
-            css={styleInput}
+            css={inputCSS}
             type="text"
             onKeyDown={(e: any) => {
               if (e.code === "Enter") {

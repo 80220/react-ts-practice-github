@@ -1,6 +1,6 @@
 import "./styles.css";
 import { useEffect, useState } from "react";
-import Chips from "./components/chips/Chips";
+import Chips from "./components/Chips";
 
 export default function App() {
   const [chipValues, setChipValues] = useState<string[]>([]);

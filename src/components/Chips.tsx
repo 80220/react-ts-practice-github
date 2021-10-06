@@ -73,7 +73,7 @@ const buttonRemoveCSS = css`
 
 function Chips(props: Props) {
   const { values, onChange } = props;
-  const counter = useRef(0);
+  const counter = useRef(0); /* instance var to identify chips */
   const [inputFocused, setInputFocused] = useState<boolean>(false);
 
   const createChip = (value: string) => {

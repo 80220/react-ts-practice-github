@@ -1,6 +1,7 @@
 import "./styles.css";
 import { useEffect, useState } from "react";
 import Chips from "./components/Chips";
+import Diagram from "./components/Diagram";
 
 export default function App() {
   const [chipValues, setChipValues] = useState<string[]>([]);
@@ -16,6 +17,8 @@ export default function App() {
           setChipValues(e.value);
         }}
       />
+      <h3 style={{ textAlign: "left" }}>Diagram</h3>
+      <Diagram size="120px" />
     </div>
   );
 }

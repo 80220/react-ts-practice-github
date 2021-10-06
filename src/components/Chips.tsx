@@ -37,11 +37,12 @@ const liInputCSS = css`
 `;
 
 const inputCSS = css`
-  width: 99%; /* ??? */
+  width: 100%; /* make it extend whole containing parent */
   min-width: 150px; /* to make input field wrap to next line for wider input field */
   border: none;
   border-color: transparent;
   outline: none; /* no border when focused */
+  padding: 0;
 `;
 
 const chipCSS = css`
@@ -102,22 +103,24 @@ function Chips(props: Props) {
           );
         })}
         <li css={liInputCSS}>
-          <input
-            css={inputCSS}
-            type="text"
-            onKeyDown={(e: any) => {
-              if (e.code === "Enter") {
-                if (e.target.value.length > 0) createChip(e.target.value);
-                e.target.value = "";
-              }
-            }}
-            onFocus={() => {
-              setInputFocused(true);
-            }}
-            onBlur={() => {
-              setInputFocused(false);
-            }}
-          ></input>
+          <label>
+            <input
+              css={inputCSS}
+              type="text"
+              onKeyDown={(e: any) => {
+                if (e.code === "Enter") {
+                  if (e.target.value.length > 0) createChip(e.target.value);
+                  e.target.value = "";
+                }
+              }}
+              onFocus={() => {
+                setInputFocused(true);
+              }}
+              onBlur={() => {
+                setInputFocused(false);
+              }}
+            ></input>
+          </label>
         </li>
       </ul>
     </div>

@@ -13,11 +13,21 @@ function InputNumber(props: Props) {
   let numInt = useRef<number>();
   return (
     <div style={{ width: "min-content" }}>
-      <label htmlFor="textInput"></label>
+      <label
+        htmlFor="textInput"
+        style={{
+          fontSize: "10px"
+          // display: "inline-block",
+          // width: "max-content",
+          // textAlign: "left"
+        }}
+      >
+        Integer only
+      </label>
       <input
         id="textInput"
-        value={value}
         type="text"
+        value={value}
         onChange={(e) => {
           let num: string = e.target.value;
           if (num.length === 0) {

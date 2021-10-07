@@ -20,12 +20,25 @@ export default function App() {
         }}
       />
       <h3 style={{ textAlign: "left" }}>InputNumber</h3>
-      <InputNumber
-        value={inputNumber1}
-        onValueChange={(e: any) => {
-          setInputNumber1(e.value);
+      <div
+        style={{
+          width: "min-content",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "start"
         }}
-      />
+      >
+        <label htmlFor="integeronly" style={{ fontSize: "12px" }}>
+          Integer Only
+        </label>
+        <InputNumber
+          inputId="integeronly"
+          value={inputNumber1}
+          onValueChange={(e: any) => {
+            setInputNumber1(e.value);
+          }}
+        />
+      </div>
       <h3 style={{ textAlign: "left" }}>Diagram</h3>
       <Diagram size="120px" />
     </div>

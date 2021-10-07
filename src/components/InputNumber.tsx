@@ -6,26 +6,16 @@ import { useState, useRef } from "react";
 interface Props {
   value: string;
   onValueChange: Function;
+  inputId: string;
 }
 
 function InputNumber(props: Props) {
-  const { value, onValueChange } = props;
+  const { value, onValueChange, inputId } = props;
   let numInt = useRef<number>();
   return (
     <div style={{ width: "min-content" }}>
-      <label
-        htmlFor="textInput"
-        style={{
-          fontSize: "10px"
-          // display: "inline-block",
-          // width: "max-content",
-          // textAlign: "left"
-        }}
-      >
-        Integer only
-      </label>
       <input
-        id="textInput"
+        id={inputId}
         type="text"
         value={value}
         onChange={(e) => {

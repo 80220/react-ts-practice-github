@@ -17,7 +17,12 @@ function Diagram({ size }: { size: string }) {
           var ctx = canvas.getContext("2d");
           ctx.font = "16px serif";
           ctx.clearRect(0, 0, canvas.width, canvas.height);
-          ctx.fillText(`(x,y)=(${x} ${y} )`, 10, 50);
+          // console.log(
+          //   new Intl.NumberFormat("fullwide", {
+          //     minimumIntegerDigits: 4
+          //   }).format(x)
+          // );
+          ctx.fillText(`(x,y)=(${x},${y})`, 10, 50);
         }}
       ></canvas>
     </div>

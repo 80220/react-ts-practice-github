@@ -1,7 +1,7 @@
 // https://www.primefaces.org/primereact/showcase/#/inputnumber
 /** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
-import { useState, useRef } from "react";
+import { useRef } from "react";
 
 interface Props {
   inputId: string;
@@ -13,12 +13,15 @@ const defaultProps = {
   useGrouping: true
 };
 
+const style = css``;
+
 function InputNumber(props: Readonly<Props>) {
   const { value, onValueChange } = props;
   let numInt = useRef<number>();
   return (
     <div>
       <input
+        css={style}
         id={props.inputId}
         type="text"
         value={value}

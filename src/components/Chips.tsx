@@ -5,7 +5,7 @@ import { useState, useRef } from "react";
 import Icons from "./Icons";
 interface Props {
   values: string[];
-  onChange: Function;
+  onChange: ({ value }: { value: string[] }) => void;
 }
 
 const backgroundColor = "#e3f2fd";
@@ -71,9 +71,9 @@ const buttonRemoveCSS = css`
   max-width: 1.1em;
 `;
 
-function Chips(props: Props) {
+function Chips(props: Readonly<Props>) {
   const { values, onChange } = props;
-  const counter = useRef(0); /* instance var to identify chips */
+  const counter = useRef<number>(0); /* instance var to identify chips */
   const [inputFocused, setInputFocused] = useState<boolean>(false);
 
   const createChip = (value: string) => {

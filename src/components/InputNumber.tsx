@@ -4,27 +4,27 @@ import { css } from "@emotion/react";
 import { useState, useRef } from "react";
 
 interface Props {
-  value: string;
-  onValueChange: Function;
   inputId: string;
+  value: string;
+  onValueChange: ({ value }: { value: string }) => void;
 }
 
-function InputNumber(props: Props) {
-  const { value, onValueChange, inputId } = props;
+function InputNumber(props: Readonly<Props>) {
+  const { value, onValueChange } = props;
   let numInt = useRef<number>();
   return (
-    <div style={{ width: "min-content" }}>
+    <div>
       <input
-        id={inputId}
+        id={props.inputId}
         type="text"
         value={value}
         onChange={(e) => {
           let num: string = e.target.value;
+          num = num.replace(/\D/g, "");
           if (num.length === 0) {
             onValueChange({ value: "" });
             return;
           }
-          num = num.replace(/\D/g, "");
           numInt.current = Number.parseInt(num, 10);
           const formatted = new Intl.NumberFormat().format(numInt.current);
           if (!Number.isNaN(formatted)) onValueChange({ value: formatted });

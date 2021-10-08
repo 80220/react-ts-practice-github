@@ -29,8 +29,7 @@ function InputNumber(props: Readonly<Props>) {
           let num: string = e.target.value;
           num = num.replace(/\D/g, "");
           if (num.length === 0) {
-            onValueChange({ value: "" });
-            return;
+            return onValueChange({ value: "" });
           }
           numInt.current = Number.parseInt(num, 10);
           if (props.useGrouping) {

@@ -7,6 +7,7 @@ import Diagram from "./components/Diagram";
 export default function App() {
   const [chipValues, setChipValues] = useState<string[]>([]);
   const [inputNumber1, setInputNumber1] = useState<string>("");
+  const [inputNumber2, setInputNumber2] = useState<string>("");
 
   useEffect(() => {}, []);
 
@@ -37,6 +38,17 @@ export default function App() {
           onValueChange={(e: any) => {
             setInputNumber1(e.value);
           }}
+        />
+        <label htmlFor="withoutgrouping" style={{ fontSize: "12px" }}>
+          Without Grouping
+        </label>
+        <InputNumber
+          inputId="withoutgrouping"
+          value={inputNumber2}
+          onValueChange={(e: any) => {
+            setInputNumber2(e.value);
+          }}
+          useGrouping={false}
         />
       </div>
       <h3 style={{ textAlign: "left" }}>Diagram</h3>

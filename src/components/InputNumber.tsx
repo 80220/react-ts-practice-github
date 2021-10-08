@@ -7,9 +7,13 @@ interface Props {
   inputId: string;
   value: string;
   onValueChange: ({ value }: { value: string }) => void;
+  useGrouping?: boolean;
 }
+const defaultProps = {
+  useGrouping: true
+};
 
-function InputNumber(props: Readonly<Props>) {
+function InputNumber(props: Readonly<Props> & typeof defaultProps) {
   const { value, onValueChange } = props;
   let numInt = useRef<number>();
   return (
@@ -26,12 +30,17 @@ function InputNumber(props: Readonly<Props>) {
             return;
           }
           numInt.current = Number.parseInt(num, 10);
-          const formatted = new Intl.NumberFormat().format(numInt.current);
-          if (!Number.isNaN(formatted)) onValueChange({ value: formatted });
+          if (props.useGrouping) {
+            const formatted = new Intl.NumberFormat().format(numInt.current);
+            if (!Number.isNaN(formatted)) onValueChange({ value: formatted });
+          } else {
+            onValueChange({ value: numInt.current.toString() });
+          }
         }}
       />
     </div>
   );
 }
+InputNumber.defaultProps = defaultProps;
 
 export default InputNumber;

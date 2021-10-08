@@ -13,7 +13,7 @@ const defaultProps = {
   useGrouping: true
 };
 
-function InputNumber(props: Readonly<Props> & typeof defaultProps) {
+function InputNumber(props: Readonly<Props>) {
   const { value, onValueChange } = props;
   let numInt = useRef<number>();
   return (

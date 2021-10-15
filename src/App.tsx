@@ -8,6 +8,7 @@ export default function App() {
   const [chipValues, setChipValues] = useState<string[]>([]);
   const [inputNumber1, setInputNumber1] = useState<string>("");
   const [inputNumber2, setInputNumber2] = useState<string>("");
+  const [inputNumber3, setInputNumber3] = useState<string>("");
 
   useEffect(() => {}, []);
 
@@ -49,6 +50,18 @@ export default function App() {
             setInputNumber2(e.value);
           }}
           useGrouping={false}
+        />
+        <label htmlFor="minmaxfraction" style={{ fontSize: "12px" }}>
+          Min-Max Fraction Digits
+        </label>
+        <InputNumber
+          inputId="minmaxfraction"
+          value={inputNumber3}
+          onValueChange={(e: any) => {
+            setInputNumber3(e.value);
+          }}
+          minFractionDigits={2}
+          maxFractionDigits={5}
         />
       </div>
       <h3 style={{ textAlign: "left" }}>Diagram</h3>

@@ -13,8 +13,8 @@ interface Props {
 }
 const defaultProps = {
   useGrouping: true,
-  minFractionDigits: null,
-  maxFractionDigits: null
+  minFractionDigits: 0,
+  maxFractionDigits: 0
 };
 
 const style = css``;
@@ -63,18 +63,30 @@ function InputNumber(props: Readonly<Props>) {
 
     numInt.current = Number.parseFloat(num);
     const formatted = formatter.format(numInt.current);
-    const positionDiff = formatted.length - value.length;
+
+    let positionDiff = formatted.length - value.length;
     console.log(
-      "num",
-      num,
-      "formatted",
+      "caretPosStart formatted.length, value.length",
+      caretPosStart,
       formatted,
-      "positionDiff",
-      positionDiff
+      value,
+      formatted.length,
+      value.length
     );
-    if (caretPosStart !== null && positionDiff > 0) {
-      setCaretPosStart(caretPosStart + positionDiff);
-      setCaretPosEnd(caretPosStart + positionDiff);
+    if (props.minFractionDigits && props.minFractionDigits > 0) {
+      if (value.length === 0) {
+        setCaretPosStart(1);
+        setCaretPosEnd(1);
+      }
+      if (value.length > 0 && caretPosStart !== null) {
+        setCaretPosStart(caretPosStart + 1);
+        setCaretPosEnd(caretPosStart + 1);
+      }
+    } else {
+      if (caretPosStart !== null && positionDiff > 0) {
+        setCaretPosStart(caretPosStart + positionDiff);
+        setCaretPosEnd(caretPosStart + positionDiff);
+      }
     }
     onValueChange({ value: formatted });
   };
@@ -83,14 +95,13 @@ function InputNumber(props: Readonly<Props>) {
     const target = e.target as HTMLInputElement;
     if (target.selectionStart === null) return; // https://html.spec.whatwg.org/multipage/input.html#do-not-apply
 
-    let caretPosStart = target.selectionStart;
-    let caretPosEnd = target.selectionEnd || target.selectionStart;
-
+    // let caretPosStart = target.selectionStart;
+    // let caretPosEnd = target.selectionEnd || target.selectionStart;
+    if (!caretPosStart) return;
     console.log("selection", caretPosStart, caretPosEnd);
 
     const currentValue = target.value;
 
-    if (target.selectionStart === 0) return;
     const { groupSeparator, decimalSeparator } = getSeparators();
     if (
       [groupSeparator, decimalSeparator].indexOf(
@@ -107,9 +118,11 @@ function InputNumber(props: Readonly<Props>) {
     const endIndex = caretPosEnd;
     let removed = removeByIndex(currentValue, startIndex, endIndex);
     console.log("removed", removed);
+    renderNumber(removed);
     target.value = removed;
     setCaretPosStart(caretPosStart - 1);
     setCaretPosEnd(caretPosStart - 1);
+    e.preventDefault();
   };
 
   useEffect(() => {
@@ -138,14 +151,43 @@ function InputNumber(props: Readonly<Props>) {
         }}
         onInput={(e: FormEvent<HTMLInputElement>) => {
           e.preventDefault();
+          console.log(
+            "(e.target as HTMLInputElement).value",
+            (e.target as HTMLInputElement).value
+          );
           renderNumber((e.target as HTMLInputElement).value);
         }}
         onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
-          const pressedKey: string = e.key;
-
           if (!inputRef.current || inputRef.current.selectionStart === null)
             return;
+          const allowedKeys = [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
+            "Backspace",
+            "ArrowLeft",
+            "ArrowRight"
+          ];
+          const pressedKey: string = e.key;
 
+          if (allowedKeys.indexOf(pressedKey) === -1) {
+            return e.preventDefault();
+          }
+          /* read & save current cursor position */
+          const newPosition = inputRef.current.selectionStart
+            ? inputRef.current.selectionStart
+            : 0;
+          setCaretPosStart(newPosition);
+          setCaretPosEnd(newPosition);
+
+          /* handle navigation */
           if (pressedKey === "ArrowLeft") {
             const newPosition =
               inputRef.current.selectionStart === 0
@@ -154,7 +196,6 @@ function InputNumber(props: Readonly<Props>) {
             setCaretPosStart(newPosition);
             setCaretPosEnd(newPosition);
           }
-
           if (pressedKey === "ArrowRight") {
             const newPosition =
               inputRef.current.selectionStart === inputRef.current.value.length
@@ -163,14 +204,7 @@ function InputNumber(props: Readonly<Props>) {
             setCaretPosStart(newPosition);
             setCaretPosEnd(newPosition);
           }
-          // if (/\d/.test(pressedKey)) {
-          //   console.log(
-          //     "pressedKey",
-          //     pressedKey,
-          //     inputRef.current.selectionStart,
-          //     inputRef.current.selectionEnd
-          //   );
-          // }
+          /* handle digits erasure */
           if (pressedKey === "Backspace") {
             backspace(e);
           }

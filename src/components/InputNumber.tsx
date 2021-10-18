@@ -95,9 +95,7 @@ function InputNumber(props: Readonly<Props>) {
     const target = e.target as HTMLInputElement;
     if (target.selectionStart === null) return; // https://html.spec.whatwg.org/multipage/input.html#do-not-apply
 
-    // let caretPosStart = target.selectionStart;
-    // let caretPosEnd = target.selectionEnd || target.selectionStart;
-    if (!caretPosStart) return;
+    if (!caretPosStart || !caretPosEnd) return;
     console.log("selection", caretPosStart, caretPosEnd);
 
     const currentValue = target.value;
@@ -125,6 +123,7 @@ function InputNumber(props: Readonly<Props>) {
     e.preventDefault();
   };
 
+  /* set caret position after each rendering */
   useEffect(() => {
     if (!inputRef.current) return;
     inputRef.current.selectionStart = caretPosStart;

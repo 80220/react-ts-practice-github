@@ -2,6 +2,7 @@ import "./styles.css";
 import { useEffect, useState } from "react";
 import Chips from "./components/Chips";
 import InputNumber from "./components/InputNumber";
+import InputMask from "./components/InputMask";
 import Diagram from "./components/Diagram";
 
 export default function App() {
@@ -9,7 +10,7 @@ export default function App() {
   const [inputNumber1, setInputNumber1] = useState<string>("");
   const [inputNumber2, setInputNumber2] = useState<string>("");
   const [inputNumber3, setInputNumber3] = useState<string>("");
-
+  const [val1, setVal1] = useState();
   useEffect(() => {}, []);
 
   return (
@@ -63,6 +64,16 @@ export default function App() {
           minFractionDigits={2}
           maxFractionDigits={5}
         />
+        <label htmlFor="basic" style={{ fontSize: "12px" }}>
+          Input Mask
+        </label>
+        <InputMask
+          id="basic"
+          mask="99-999999"
+          value={val1}
+          placeholder="99-999999"
+          onChange={(e: any) => setVal1(e.value)}
+        ></InputMask>
       </div>
       <h3 style={{ textAlign: "left" }}>Diagram</h3>
       <Diagram size="120px" />

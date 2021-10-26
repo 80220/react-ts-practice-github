@@ -12,6 +12,7 @@ interface Props {
 const defaultProps = {
   slotChar: undefined
 };
+
 const validateKey = (key: string) => {
   /* Allowed input:
   a - Alpha character (A-Z,a-z)
@@ -20,7 +21,7 @@ const validateKey = (key: string) => {
   backspace/delete/arrow left right/
  */
   const regex = new RegExp(
-    /(^[a-z]$)|(^[A-Z]$)|(^[0-9]$)|(^Backspace$)|(^Delete$)|(^ArrowLeft$)|(^ArrowRight$)/g
+    /(^[a-z]$)|(^[A-Z]$)|(^[0-9]$)|(^Backspace$)|(^Delete$)|(^ArrowLeft$)|(^ArrowRight$)||(^Home$)|(^End$)/g
   );
   return regex.test(key);
 };

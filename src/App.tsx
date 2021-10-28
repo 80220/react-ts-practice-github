@@ -10,7 +10,7 @@ export default function App() {
   const [inputNumber1, setInputNumber1] = useState<string>("");
   const [inputNumber2, setInputNumber2] = useState<string>("");
   const [inputNumber3, setInputNumber3] = useState<string>("");
-  const [val1, setVal1] = useState();
+  const [val1, setVal1] = useState("");
   useEffect(() => {}, []);
 
   return (

@@ -128,7 +128,7 @@ function InputNumber(props: Readonly<Props>) {
     if (!inputRef.current) return;
     inputRef.current.selectionStart = caretPosStart;
     inputRef.current.selectionEnd = caretPosEnd;
-    console.log("useEffect start end:", caretPosStart, caretPosEnd);
+    // console.log("useEffect start end:", caretPosStart, caretPosEnd);
   });
 
   return (

@@ -41,6 +41,7 @@ export default function InputMask(props: Readonly<Props>) {
 
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
+  /* create slot if none provided by a user */
   const createSlotChart = () => {
     const regex = new RegExp(/(^[a-z]$)|(^[A-Z]$)|(^[0-9]$)/);
     let s = "";
@@ -49,13 +50,13 @@ export default function InputMask(props: Readonly<Props>) {
       if (regex.test(ch)) s += "_";
       else s += ch;
     }
-
     return s;
   };
 
   const [slotChar, setSlotChar] = useState<string>(
     props.slotChar || createSlotChart()
   );
+
   const alterValue = (ch: string) => {
     let currentValue = props.value;
     let mask = props.mask;
@@ -64,13 +65,28 @@ export default function InputMask(props: Readonly<Props>) {
     setCaretPosStart(caretPosStart + 1);
     setCaretPosEnd(caretPosEnd + 1);
   };
+
   const keyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
     const key: string = e.key;
     if (!validateKey(key)) return e.preventDefault();
     if (key === "Backspace") {
     } else if (key === "Delete") {
     } else if (key === "ArrowLeft") {
+      if (!inputRef.current || !inputRef.current.selectionStart) return;
+      const newPosition =
+        inputRef.current.selectionStart === 0
+          ? inputRef.current.selectionStart
+          : inputRef.current.selectionStart - 1;
+      setCaretPosStart(newPosition);
+      setCaretPosEnd(newPosition);
     } else if (key === "ArrowRight") {
+      if (!inputRef.current || !inputRef.current.selectionStart) return;
+      const newPosition =
+        inputRef.current.selectionStart === inputRef.current.value.length
+          ? inputRef.current.selectionStart
+          : inputRef.current.selectionStart + 1;
+      setCaretPosStart(newPosition);
+      setCaretPosEnd(newPosition);
     } else if (key === "Home") {
     } else if (key === "End") {
     } else {
@@ -99,8 +115,10 @@ export default function InputMask(props: Readonly<Props>) {
   };
 
   useEffect(() => {
-    console.log("rendered");
-  }, [props.value]);
+    if (!inputRef.current) return;
+    inputRef.current.selectionStart = caretPosStart;
+    inputRef.current.selectionEnd = caretPosEnd;
+  }, [props.value, caretPosStart, caretPosEnd]);
 
   return (
     <input

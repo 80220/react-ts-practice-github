@@ -38,7 +38,6 @@ export default function InputMask(props: Readonly<Props>) {
   const inputRef = useRef<HTMLInputElement | null>(null); // to read caret position
   const [caretPosStart, setCaretPosStart] = useState<number>(0);
   const [caretPosEnd, setCaretPosEnd] = useState<number>(0);
-
   const [isFocused, setIsFocused] = useState<boolean>(false);
 
   /* create slot if none provided by a user */
@@ -109,6 +108,7 @@ export default function InputMask(props: Readonly<Props>) {
     props.onChange({ value: e.target.value });
     e.preventDefault();
   };
+
   const onBlurHandler = () => {
     props.onChange({ value: "" });
     setIsFocused(false);

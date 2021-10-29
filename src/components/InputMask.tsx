@@ -43,11 +43,12 @@ export default function InputMask(props: Readonly<Props>) {
 
   /* create slot if none provided by a user */
   const createSlotChart = () => {
+    const separator = "_";
     const regex = new RegExp(/(^[a-z]$)|(^[A-Z]$)|(^[0-9]$)/);
     let s = "";
     for (let i = 0; i < props.mask.length; i++) {
       const ch = props.mask.charAt(i);
-      if (regex.test(ch)) s += "_";
+      if (regex.test(ch)) s += separator;
       else s += ch;
     }
     return s;
@@ -57,13 +58,22 @@ export default function InputMask(props: Readonly<Props>) {
     props.slotChar || createSlotChart()
   );
 
+  const getSeparators = (mask: any) => {
+    const regex = new RegExp(/[a-zA-Z0-9]/g);
+    return Array.from(mask.replaceAll(regex, ""));
+  };
+
   const alterValue = (ch: string) => {
-    let currentValue = props.value;
-    let mask = props.mask;
-    let newValue = "";
+    let currentValue = String(props.value);
+    const separators = getSeparators(props.mask);
+    let index = caretPosStart;
+    while (separators.indexOf(currentValue[index]) !== -1) index++;
+    if (index === props.mask.length) return;
+    let newValue =
+      currentValue.substr(0, index) + ch + currentValue.substr(index + 1);
     props.onChange({ value: newValue });
-    setCaretPosStart(caretPosStart + 1);
-    setCaretPosEnd(caretPosEnd + 1);
+    setCaretPosStart(index + 1);
+    setCaretPosEnd(index + 1);
   };
 
   const keyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -72,7 +82,7 @@ export default function InputMask(props: Readonly<Props>) {
     if (key === "Backspace") {
     } else if (key === "Delete") {
     } else if (key === "ArrowLeft") {
-      if (!inputRef.current || !inputRef.current.selectionStart) return;
+      if (!inputRef.current || inputRef.current.selectionStart === null) return;
       const newPosition =
         inputRef.current.selectionStart === 0
           ? inputRef.current.selectionStart
@@ -80,7 +90,7 @@ export default function InputMask(props: Readonly<Props>) {
       setCaretPosStart(newPosition);
       setCaretPosEnd(newPosition);
     } else if (key === "ArrowRight") {
-      if (!inputRef.current || !inputRef.current.selectionStart) return;
+      if (!inputRef.current || inputRef.current.selectionStart === null) return;
       const newPosition =
         inputRef.current.selectionStart === inputRef.current.value.length
           ? inputRef.current.selectionStart
@@ -90,7 +100,8 @@ export default function InputMask(props: Readonly<Props>) {
     } else if (key === "Home") {
     } else if (key === "End") {
     } else {
-      // alterValue(key);
+      alterValue(key);
+      e.preventDefault();
     }
   };
 
@@ -99,12 +110,13 @@ export default function InputMask(props: Readonly<Props>) {
     e.preventDefault();
   };
   const onBlurHandler = () => {
-    props.onChange({ value: props.mask });
+    props.onChange({ value: "" });
     setIsFocused(false);
   };
 
   const onMouseClickHandler = (e: FormEvent<HTMLInputElement>) => {
-    if (!inputRef.current || !inputRef.current.selectionStart) return;
+    if (!inputRef.current || inputRef.current.selectionStart === null) return;
+
     setCaretPosStart(inputRef.current.selectionStart);
     setCaretPosEnd(inputRef.current.selectionStart);
 
